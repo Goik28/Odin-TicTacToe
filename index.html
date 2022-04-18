@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+    <title>Goik's TicTacToe</title>
+</head>
+
+<body>
+    <main>
+        <header>Welcome to Goik's Tic-Tac-Toe</header>
+        <div>Player list:
+            <form action="">
+                <div>
+                    <label for="playerOne_Name">Player 1 Name:</label>
+                    <input id="playerOne_Name" type="text" name="playerName" placeholder="Ex: John">
+                </div>
+                <div>
+                    <label for="playerOne_Type">Player 1 Type:</label>
+                    <div>
+                        <input id="playerOne_Human" type="radio" name="playerType" checked>
+                        <label for="playerOne_Human">Human</label>
+                        <input id="playerOne_NormalAI" type="radio" name="playerType">
+                        <label for="playerOne_NormalAI">Normal AI</label>
+                        <input id="playerOne_impossibleAI" type="radio" name="playerType">
+                        <label for="playerOne_impossibleAI">Impossible AI</label>
+                    </div>
+                </div>
+                <button type="button">Lock-in</button>
+            </form>
+            <form action="">
+                <div>
+                    <label for="playerTwo_Name">Player 2 Name:</label>
+                    <input id="playerTwo_Name" type="text" name="playerName" placeholder="Ex: Terminator">
+                </div>
+                <div>
+                    <label for="playerTwo_Type">Player 2 Type:</label>
+                    <div>
+                        <input id="playerTwo_Human" type="radio" name="playerType">
+                        <label for="playerTwo_Human">Human</label>
+                        <input id="playerTwo_NormalAI" type="radio" name="playerType" checked>
+                        <label for="playerTwo_NormalAI">Normal AI</label>
+                        <input id="playerTwo_impossibleAI" type="radio" name="playerType">
+                        <label for="playerTwo_impossibleAI">Impossible AI</label>
+                    </div>
+                </div>
+                <button type="button"> Lock-in</button>
+            </form>
+        </div>
+        <div>Game Controls
+            <button>New match</button>
+            <button>Reset score</button>
+        </div>
+        <main>
+            <div class="boardSquare_0"></div>
+            <div class="boardSquare_1"></div>
+            <div class="boardSquare_2"></div>
+            <div class="boardSquare_3"></div>
+            <div class="boardSquare_4"></div>
+            <div class="boardSquare_5"></div>
+            <div class="boardSquare_6"></div>
+            <div class="boardSquare_7"></div>
+            <div class="boardSquare_8"></div>
+        </main>
+        <footer>
+            <div>Total games played:&nbsp;</div>
+            <div>Player 1 wins:&nbsp;</div>
+            <div>Player 2 wins:&nbsp;</div>
+            <div>Draws:&nbsp;</div>
+        </footer>
+    </main>
+</body>
+
+</html>
