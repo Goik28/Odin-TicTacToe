@@ -11,7 +11,11 @@
 <body>
     <div class="container">
         <header>Welcome to Goik's Tic-Tac-Toe</header>
-        <div class="player_Container">Player list:
+        <div class="player_Container">
+            <div class="controls_Container">Player list & Game controls:
+                <button>New match</button>
+                <button>Reset score</button>
+            </div> 
             <form class="playerOne_Container" action="">
                 <div class="player_Name">
                     <label for="playerOne_Name">Player 1 Name:</label>
@@ -28,7 +32,7 @@
                         <label for="playerOne_impossibleAI">Impossible AI</label>
                     </div>
                 </div>
-                <input type="color" name="playerOne_Color" id="playerOne_Color" value="Blue">
+                <input type="color" name="playerOne_Color" id="playerOne_Color" value="#0000ff">
                 <button type="button">Lock-in</button>
             </form>
             <form class="playerTwo_Container" action="">
@@ -36,9 +40,9 @@
                     <label for="playerTwo_Name">Player 2 Name:</label>
                     <input id="playerTwo_Name" type="text" name="playerName" placeholder="Ex: Terminator">
                 </div>
-                <div>
+                <div class="player_Type">
                     <label for="playerTwo_Type">Player 2 Type:</label>
-                    <div class="player_Type">
+                    <div>
                         <input id="playerTwo_Human" type="radio" name="playerType">
                         <label for="playerTwo_Human">Human</label>
                         <input id="playerTwo_NormalAI" type="radio" name="playerType" checked>
@@ -47,13 +51,9 @@
                         <label for="playerTwo_impossibleAI">Impossible AI</label>
                     </div>
                 </div>
-                <input type="color" name="playerTwo_Color" id="playerTwo_Color" value="Red">
+                <input type="color" name="playerTwo_Color" id="playerTwo_Color" value="#ff0000">
                 <button type="button"> Lock-in</button>
             </form>
-        </div>
-        <div>Game Controls
-            <button>New match</button>
-            <button>Reset score</button>
         </div>
         <main>
             <div class="boardSquare_0"></div>

@@ -1,6 +1,8 @@
 *{
     padding: 0;
     margin: 0;
+    border-width: 0;
+    box-sizing: border-box;
 }
 
 body{
@@ -12,7 +14,6 @@ body{
 
 .container{
     width: 950px;
-    margin: 50px 0;
     padding: 25px;
     border: 5px solid white;
     border-radius: 25px;
@@ -33,7 +34,6 @@ header{
     font-size: 1.3em;
     font-weight: 700;
     text-align: center;
-    padding-bottom: 25px;
     border-width: 0 0 5px 0;
     border-style: solid;
     border-color: white;
@@ -44,9 +44,11 @@ header{
     font-size: 1em;
     font-weight: 500;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: space-between;    
     padding-top: 25px;
+}
+
+.playerTwo_Container{
     margin-top: 25px;
     border-width: 5px 0 0 0;
     border-style: dotted;
@@ -54,7 +56,80 @@ header{
 }
 
 .player_Name,
-.player_type{
+.player_Type{    
     display: flex;
     flex-direction: column;
+    gap: 10px;
+}
+
+#playerOne_Color,
+#playerTwo_Color{
+    height: auto;
+}
+
+button{
+    width: 100px;
+}
+
+.controls_Container{
+    padding: 0 0 25px 0;
+    font-size: 1.3em;
+    font-weight: 700;
+    text-align: center;
+    border-width: 0 0 5px 0;
+    border-style: solid;
+    border-color: white;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+main{
+    padding: 25px 0;
+    display: grid;
+    grid-template-rows: 200px 210px 200px;
+    grid-template-columns: 205px 200px 205px;
+    justify-content: center;
+    align-content: center;
+    border-width: 0 0 5px 0;
+    border-style: solid;
+    border-color: white;
+}
+
+main>div{
+    box-sizing: border-box;
+}
+
+
+.boardSquare_0,
+.boardSquare_3,
+.boardSquare_6{
+    border-width: 0 5px 0 0;
+    border-style: dotted;
+    border-color: white;
+}
+
+.boardSquare_2,
+.boardSquare_5,
+.boardSquare_8{
+    border-width: 0 0 0 5px;
+    border-style: dotted;
+    border-color: white;
+}
+
+.boardSquare_3,
+.boardSquare_4,
+.boardSquare_5{
+    border-top-width: 5px;
+    border-bottom-width: 5px;
+    border-style: dotted;
+    border-color: white;
+}
+
+footer{
+    font-size: 1em;
+    font-weight: 700;
+    padding-top: 25px;
+    display: flex;
+    justify-content: space-around;
 }
