@@ -9,15 +9,15 @@
 </head>
 
 <body>
-    <main>
+    <div class="container">
         <header>Welcome to Goik's Tic-Tac-Toe</header>
-        <div>Player list:
-            <form action="">
-                <div>
+        <div class="player_Container">Player list:
+            <form class="playerOne_Container" action="">
+                <div class="player_Name">
                     <label for="playerOne_Name">Player 1 Name:</label>
                     <input id="playerOne_Name" type="text" name="playerName" placeholder="Ex: John">
                 </div>
-                <div>
+                <div class="player_Type">
                     <label for="playerOne_Type">Player 1 Type:</label>
                     <div>
                         <input id="playerOne_Human" type="radio" name="playerType" checked>
@@ -28,16 +28,17 @@
                         <label for="playerOne_impossibleAI">Impossible AI</label>
                     </div>
                 </div>
+                <input type="color" name="playerOne_Color" id="playerOne_Color" value="Blue">
                 <button type="button">Lock-in</button>
             </form>
-            <form action="">
-                <div>
+            <form class="playerTwo_Container" action="">
+                <div class="player_Name">
                     <label for="playerTwo_Name">Player 2 Name:</label>
                     <input id="playerTwo_Name" type="text" name="playerName" placeholder="Ex: Terminator">
                 </div>
                 <div>
                     <label for="playerTwo_Type">Player 2 Type:</label>
-                    <div>
+                    <div class="player_Type">
                         <input id="playerTwo_Human" type="radio" name="playerType">
                         <label for="playerTwo_Human">Human</label>
                         <input id="playerTwo_NormalAI" type="radio" name="playerType" checked>
@@ -46,6 +47,7 @@
                         <label for="playerTwo_impossibleAI">Impossible AI</label>
                     </div>
                 </div>
+                <input type="color" name="playerTwo_Color" id="playerTwo_Color" value="Red">
                 <button type="button"> Lock-in</button>
             </form>
         </div>
@@ -70,7 +72,7 @@
             <div>Player 2 wins:&nbsp;</div>
             <div>Draws:&nbsp;</div>
         </footer>
-    </main>
+    </div>
 </body>
 
 </html>
