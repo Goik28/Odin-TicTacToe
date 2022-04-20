@@ -1,3 +1,23 @@
+{//Protect radio choices, disabling both players having the same symbol.
+document.getElementById("playerOne_O").addEventListener("change", () => {
+    document.getElementById("playerTwo_O").checked = false;
+    document.getElementById("playerTwo_X").checked = true;
+});
+document.getElementById("playerOne_X").addEventListener("change", () => {
+    document.getElementById("playerTwo_O").checked = true;
+    document.getElementById("playerTwo_X").checked = false;
+});
+
+document.getElementById("playerTwo_O").addEventListener("change", () => {
+    document.getElementById("playerOne_O").checked = false;
+    document.getElementById("playerOne_X").checked = true;
+});
+document.getElementById("playerTwo_X").addEventListener("change", () => {
+    document.getElementById("playerOne_O").checked = true;
+    document.getElementById("playerOne_X").checked = false;
+});
+}
+
 const playerFactory = (name, type, symbol, color) => {
     let wins = 0;
     const countWins = () => wins++;

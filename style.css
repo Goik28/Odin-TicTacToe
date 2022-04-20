@@ -63,6 +63,10 @@ header{
     gap: 10px;
 }
 
+.player_Type>input{
+    height: 10px;
+}
+
 #playerOne_Color,
 #playerTwo_Color{
     height: auto;
