@@ -12,13 +12,9 @@
     <div class="container">
         <header>Welcome to Goik's Tic-Tac-Toe</header>
         <div class="player_Container">
-            <div class="controls_Container">Player list & Game controls:
-                <button>New match</button>
-                <button>Reset score</button>
-            </div> 
             <form class="playerOne_Container" action="">
                 <div class="player_Name">
-                    <label for="playerOne_Name">Player 1 Name:</label>
+                    <label for="playerOne_Name">Player 1:</label>
                     <input id="playerOne_Name" type="text" name="playerName" placeholder="Ex: John">
                 </div>
                 <div class="player_Type">
@@ -27,9 +23,18 @@
                         <input id="playerOne_Human" type="radio" name="playerType" checked>
                         <label for="playerOne_Human">Human</label>
                         <input id="playerOne_NormalAI" type="radio" name="playerType">
-                        <label for="playerOne_NormalAI">Normal AI</label>
+                        <label for="playerOne_NormalAI">AI</label>
                         <input id="playerOne_impossibleAI" type="radio" name="playerType">
                         <label for="playerOne_impossibleAI">Impossible AI</label>
+                    </div>
+                </div>
+                <div class="player_Symbol">
+                    <div>Symbol:</div>
+                    <div>
+                        <input id="playerOne_O" type="radio" name="playerSymbol" checked>
+                        <label for="playerOne_O">O</label>
+                        <input id="playerOne_X" type="radio" name="playerSymbol">
+                        <label for="playerOne_X">X</label>
                     </div>
                 </div>
                 <input type="color" name="playerOne_Color" id="playerOne_Color" value="#0000ff">
@@ -37,7 +42,7 @@
             </form>
             <form class="playerTwo_Container" action="">
                 <div class="player_Name">
-                    <label for="playerTwo_Name">Player 2 Name:</label>
+                    <label for="playerTwo_Name">Player 2:</label>
                     <input id="playerTwo_Name" type="text" name="playerName" placeholder="Ex: Terminator">
                 </div>
                 <div class="player_Type">
@@ -46,16 +51,30 @@
                         <input id="playerTwo_Human" type="radio" name="playerType">
                         <label for="playerTwo_Human">Human</label>
                         <input id="playerTwo_NormalAI" type="radio" name="playerType" checked>
-                        <label for="playerTwo_NormalAI">Normal AI</label>
+                        <label for="playerTwo_NormalAI">AI</label>
                         <input id="playerTwo_impossibleAI" type="radio" name="playerType">
                         <label for="playerTwo_impossibleAI">Impossible AI</label>
+                    </div>
+                </div>
+                <div class="player_Symbol">
+                    <div>Symbol:</div>
+                    <div>
+                        <input id="playerTwo_O" type="radio" name="playerSymbol">
+                        <label for="playerTwo_O">O</label>
+                        <input id="playerTwo_X" type="radio" name="playerSymbol" checked>
+                        <label for="playerTwo_X">X</label>
                     </div>
                 </div>
                 <input type="color" name="playerTwo_Color" id="playerTwo_Color" value="#ff0000">
                 <button type="button"> Lock-in</button>
             </form>
         </div>
-        <main>
+        <div class="controls_Container">Game controls:
+            <button disabled>New match</button>
+            <button disabled>Reset score</button>
+            <div class="player_Turn"></div>
+        </div> 
+        <main>            
             <div class="boardSquare_0"></div>
             <div class="boardSquare_1"></div>
             <div class="boardSquare_2"></div>
