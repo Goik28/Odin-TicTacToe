@@ -1,25 +1,25 @@
-*{
+* {
     padding: 0;
     margin: 0;
     border-width: 0;
     box-sizing: border-box;
 }
 
-body{
+body {
     display: flex;
     justify-content: center;
     background-color: black;
     color: white;
 }
 
-.container{
+.container {
     width: 950px;
     padding: 25px;
     border: 5px solid white;
     border-radius: 25px;
 }
 
-header{
+header {
     font-size: 2em;
     font-weight: 900;
     text-align: center;
@@ -29,7 +29,7 @@ header{
     border-color: white;
 }
 
-.player_Container{
+.player_Container {
     padding: 0 0 25px 0;
     font-size: 1.3em;
     font-weight: 700;
@@ -40,15 +40,15 @@ header{
 }
 
 .playerOne_Container,
-.playerTwo_Container{
+.playerTwo_Container {
     font-size: 1em;
     font-weight: 500;
     display: flex;
-    justify-content: space-between;    
+    justify-content: space-between;
     padding-top: 25px;
 }
 
-.playerTwo_Container{
+.playerTwo_Container {
     margin-top: 25px;
     border-width: 5px 0 0 0;
     border-style: dotted;
@@ -57,7 +57,7 @@ header{
 
 .player_Name,
 .player_Type,
-.player_Symbol{    
+.player_Symbol {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -70,15 +70,21 @@ header{
 }
 
 #playerOne_Color,
-#playerTwo_Color{
+#playerTwo_Color {
     height: auto;
 }
 
-button{
+button {
     width: 100px;
 }
 
-.controls_Container{
+input:disabled {
+    color: white;
+    text-align: center;
+    background-color: transparent;
+}
+
+.controls_Container {
     padding: 25px 0;
     font-size: 1.3em;
     font-weight: 700;
@@ -90,7 +96,7 @@ button{
     gap: 10px;
 }
 
-main{
+main {
     padding: 25px 0;
     display: grid;
     grid-template-rows: 200px 210px 200px;
@@ -102,14 +108,14 @@ main{
     border-color: white;
 }
 
-main>div{
+main>div {
     box-sizing: border-box;
 }
 
 
 #bs0,
 #bs3,
-#bs6{
+#bs6 {
     border-width: 0 5px 0 0;
     border-style: dotted;
     border-color: white;
@@ -117,7 +123,7 @@ main>div{
 
 #bs2,
 #bs5,
-#bs8{
+#bs8 {
     border-width: 0 0 0 5px;
     border-style: dotted;
     border-color: white;
@@ -125,14 +131,14 @@ main>div{
 
 #bs3,
 #bs4,
-#bs5{
+#bs5 {
     border-top-width: 5px;
     border-bottom-width: 5px;
     border-style: dotted;
     border-color: white;
 }
 
-footer{
+footer {
     font-size: 1em;
     font-weight: 700;
     padding-top: 25px;
