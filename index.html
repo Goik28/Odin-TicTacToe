@@ -15,57 +15,47 @@
             <form class="playerOne_Container" action="">
                 <div class="player_Name">
                     <label for="playerOne_Name">Player 1:</label>
-                    <input id="playerOne_Name" type="text" name="playerName" value="Savior">
+                    <input id="playerOne_Name" type="text" name="playerName" value="Savior" autocomplete="off">
                 </div>
                 <div class="player_Type">
                     <label for="playerOne_Type">Player 1 Type:</label>
-                    <div>
-                        <input id="playerOne_Human" type="radio" name="playerType" value="human" checked>
-                        <label for="playerOne_Human">Human</label>
-                        <input id="playerOne_NormalAI" type="radio" name="playerType" value="normalAI">
-                        <label for="playerOne_NormalAI">AI</label>
-                        <input id="playerOne_impossibleAI" type="radio" name="playerType" value="ImpossibleAI">
-                        <label for="playerOne_impossibleAI">Impossible AI</label>
-                    </div>
+                    <select name="player_Type" id="playerOne_Type" autocomplete="off">
+                        <option value="human" selected>Human</option>
+                        <option value="normalAI">Normal AI</option>
+                        <option value="impossibleAI">Impossible AI</option>
+                    </select>
                 </div>
                 <div class="player_Symbol">
-                    <div>Symbol:</div>
-                    <div>
-                        <input id="playerOne_O" type="radio" name="playerSymbol" value="O" checked>
-                        <label for="playerOne_O">O</label>
-                        <input id="playerOne_X" type="radio" name="playerSymbol" value="X">
-                        <label for="playerOne_X">X</label>
-                    </div>
+                    <label for="playerOne_Symbol">Symbol:</label>
+                    <select name="player_Symbol" id="playerOne_Symbol" autocomplete="off">
+                        <option value="O" id="playerOne_O" selected>O</option>
+                        <option value="X" id="playerOne_X">X</option>
+                    </select>
                 </div>
-                <input type="color" name="playerOne_Color" id="playerOne_Color" value="#0000ff">
+                <input type="color" name="playerOne_Color" id="playerOne_Color" value="#0000ff" autocomplete="off">
                 <button class="lockPlayer" type="button">Lock-in</button>
             </form>
             <form class="playerTwo_Container" action="">
                 <div class="player_Name">
                     <label for="playerTwo_Name">Player 2:</label>
-                    <input id="playerTwo_Name" type="text" name="playerName" value="Terminator">
+                    <input id="playerTwo_Name" type="text" name="playerName" value="Terminator" autocomplete="off">
                 </div>
                 <div class="player_Type">
                     <label for="playerTwo_Type">Player 2 Type:</label>
-                    <div>
-                        <input id="playerTwo_Human" type="radio" name="playerType" value="human">
-                        <label for="playerTwo_Human">Human</label>
-                        <input id="playerTwo_NormalAI" type="radio" name="playerType" value="normalAI" checked>
-                        <label for="playerTwo_NormalAI">AI</label>
-                        <input id="playerTwo_impossibleAI" type="radio" name="playerType" value="impossibleAI">
-                        <label for="playerTwo_impossibleAI">Impossible AI</label>
-                    </div>
+                    <select name="player_Type" id="playerTwo_Type" autocomplete="off">
+                        <option value="human">Human</option>
+                        <option value="normalAI" selected>Normal AI</option>
+                        <option value="impossibleAI">Impossible AI</option>
+                    </select>
                 </div>
                 <div class="player_Symbol">
-                    <div>Symbol:</div>
-                    <div>
-                        <input id="playerTwo_O" type="radio" name="playerSymbol" value="O">
-                        <label for="playerTwo_O">O</label>
-                        <input id="playerTwo_X" type="radio" name="playerSymbol" value="X" checked>
-                        <label for="playerTwo_X">X</label>
-                    </div>
+                    <label for="playerTwo_Symbol">Symbol:</label>
+                    <select name="player_Symbol" id="playerTwo_Symbol" autocomplete="off">
+                        <option value="O" id="playerTwo_O">O</option>
+                        <option value="X" id="playerTwo_X" selected>X</option>
+                    </select>
                 </div>
-                <input type="color" name="playerTwo_Color" id="playerTwo_Color" value="#ff0000">
+                <input type="color" name="playerTwo_Color" id="playerTwo_Color" value="#ff0000" autocomplete="off">
                 <button class="lockPlayer" type="button">Lock-in</button>
             </form>
         </div>
@@ -73,8 +63,8 @@
             <button disabled>New match</button>
             <button disabled>Reset score</button>
             <div class="player_Turn"></div>
-        </div> 
-        <main>            
+        </div>
+        <main>
             <div class="boardSquare" id="bs0"></div>
             <div class="boardSquare" id="bs1"></div>
             <div class="boardSquare" id="bs2"></div>

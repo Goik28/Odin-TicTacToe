@@ -1,21 +1,19 @@
-{//Protect radio choices, disabling both players having the same symbol.
-document.getElementById("playerOne_O").addEventListener("change", () => {
-    document.getElementById("playerTwo_O").checked = false;
-    document.getElementById("playerTwo_X").checked = true;
-});
-document.getElementById("playerOne_X").addEventListener("change", () => {
-    document.getElementById("playerTwo_O").checked = true;
-    document.getElementById("playerTwo_X").checked = false;
-});
+{//Protect select choices, disabling both players having the same symbol.
 
-document.getElementById("playerTwo_O").addEventListener("change", () => {
-    document.getElementById("playerOne_O").checked = false;
-    document.getElementById("playerOne_X").checked = true;
-});
-document.getElementById("playerTwo_X").addEventListener("change", () => {
-    document.getElementById("playerOne_O").checked = true;
-    document.getElementById("playerOne_X").checked = false;
-});
+    document.getElementById("playerOne_Symbol").addEventListener("change", (e) => {
+        if (e.target.selectedIndex == 0) {
+            document.getElementById("playerTwo_Symbol").selectedIndex = 1;
+        } else {
+            document.getElementById("playerTwo_Symbol").selectedIndex = 0;
+        }
+    });
+    document.getElementById("playerTwo_Symbol").addEventListener("change", (e) => {
+        if (e.target.selectedIndex == 0) {
+            document.getElementById("playerOne_Symbol").selectedIndex = 1;
+        } else {
+            document.getElementById("playerOne_Symbol").selectedIndex = 0;
+        }
+    });
 }
 
 const playerFactory = (name, type, symbol, color) => {
@@ -49,20 +47,28 @@ Array.from(board).forEach(element => {
 });*/
 
 const lockPlayer = document.getElementsByClassName("lockPlayer");
-
 Array.from(lockPlayer).forEach(element => {
     element.addEventListener("click", (e) => {
         if (e.target.textContent == "Lock-in") {
-            let playerData = new FormData(element.parentElement);
+            let playerData = [];
+            playerData.push(element.parentElement[0].value);
+            playerData.push(element.parentElement[1].value);
+            playerData.push(element.parentElement[2].value);
+            playerData.push(element.parentElement[3].value);            
             playerFactory(playerData[0], playerData[1], playerData[2], playerData[3]);
             e.target.textContent = "Unlock";
             Array.from(element.parentElement.getElementsByTagName("input")).forEach(element => {
                 element.disabled = true;
             });
-            e.target.disabled = false;
-        } else{
+            Array.from(element.parentElement.getElementsByTagName("select")).forEach(element => {
+                element.disabled = true;
+            });
+        } else {
             e.target.textContent = "Lock-in";
             Array.from(element.parentElement.getElementsByTagName("input")).forEach(element => {
+                element.disabled = false;
+            });
+            Array.from(element.parentElement.getElementsByTagName("select")).forEach(element => {
                 element.disabled = false;
             });
         }
