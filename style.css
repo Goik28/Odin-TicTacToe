@@ -63,8 +63,10 @@ header{
     gap: 10px;
 }
 
-.player_Type>input{
-    height: 10px;
+.player_Type>div>input,
+.player_Symbol>div>input {
+    height: 20px;
+    width: 20px;
 }
 
 #playerOne_Color,
