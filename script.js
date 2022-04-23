@@ -17,6 +17,7 @@
 let playerList = [];
 let playerOneLock = false;
 let playerTwoLock = false;
+let playerOneTurn = false;
 let gameBoard = [];
 
 const playerFactory = (name, type, symbol, color) => {
@@ -46,7 +47,13 @@ const playBoard = (() => {
 const board = document.getElementsByClassName("boardSquare");
 Array.from(board).forEach(element => {
     element.addEventListener("click", (e) => {
+        if(playerOneTurn){
         playBoard.writePlay(playerList[0], e.target);
+        } else {
+            playBoard.writePlay(playerList[1], e.target);
+        }
+        alternatePlayer();
+        playerTurnMessage();
     });
 });
 
@@ -60,7 +67,8 @@ Array.from(lockPlayer).forEach(element => {
                     .forEach(element => {
                         element.disabled = false;
                     });
-                playerTurnMessage(randomizeFirst());
+                randomizeFirst();
+                playerTurnMessage();
             }
         } else {
             unlockPlayerData(e, element);
@@ -117,11 +125,23 @@ function unlockPlayerData(event, element) {
 }
 
 function randomizeFirst() {
-    return Math.round(Math.random());
+    if (Math.round(Math.random()) == 0) {
+        playerOneTurn = true;
+    }
 }
 
-function playerTurnMessage(player) {
-    document.getElementsByClassName("player_Turn")[0].textContent = "It's "
-        + playerList[player].getPlayerName() + " turn.";
-    document.getElementsByClassName("player_Turn")[0].style.color = playerList[player].getPlayerColor();
+function playerTurnMessage() {
+    if (playerOneTurn) {
+        document.getElementsByClassName("player_Turn")[0].textContent = "It's "
+            + playerList[0].getPlayerName() + " turn.";
+        document.getElementsByClassName("player_Turn")[0].style.color = playerList[0].getPlayerColor();
+    } else {
+        document.getElementsByClassName("player_Turn")[0].textContent = "It's "
+            + playerList[1].getPlayerName() + " turn.";
+        document.getElementsByClassName("player_Turn")[0].style.color = playerList[1].getPlayerColor();
+    }
+}
+
+function alternatePlayer() {
+   return playerOneTurn = !playerOneTurn;
 }
