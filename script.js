@@ -37,25 +37,61 @@ const playerFactory = (name, type, symbol, color) => {
 
 const playBoard = (() => {
     const writePlay = (player, boardSquare) => {
-        boardSquare.textContent = player.getPlayerSymbol();
-        boardSquare.style.color = player.getPlayerColor();
-        gameBoard[parseInt(boardSquare.id.charAt(2))] = player.getPlayerName();
+        if (checkValidPlay(boardSquare)) {
+            boardSquare.textContent = player.getPlayerSymbol();
+            boardSquare.style.color = player.getPlayerColor();
+            gameBoard[parseInt(boardSquare.id.charAt(2))] = player.getPlayerName();
+            checkWin(player);
+        }
     }
+
+    const checkWin = (player) => {
+        if ((gameBoard[0] && gameBoard[1] && gameBoard[2]) ||
+            (gameBoard[3] && gameBoard[4] && gameBoard[5]) ||
+            (gameBoard[6] && gameBoard[7] && gameBoard[8]) ||
+            (gameBoard[0] && gameBoard[3] && gameBoard[6]) ||
+            (gameBoard[1] && gameBoard[4] && gameBoard[7]) ||
+            (gameBoard[2] && gameBoard[5] && gameBoard[8]) ||
+            (gameBoard[0] && gameBoard[4] && gameBoard[8]) ||
+            (gameBoard[2] && gameBoard[4] && gameBoard[6])) {
+            disableBoardPlay();
+            player.countWins();
+            winMessage(player);
+        } else {
+            alternatePlayer();
+            playerTurnMessage();            
+        }
+    };
+
+    const checkValidPlay = (boardSquare) => {
+        return (gameBoard[parseInt(boardSquare.id.charAt(2))] == undefined)
+    }
+
     return { writePlay };
 })();
 
-const board = document.getElementsByClassName("boardSquare");
-Array.from(board).forEach(element => {
-    element.addEventListener("click", (e) => {
-        if(playerOneTurn){
-        playBoard.writePlay(playerList[0], e.target);
-        } else {
-            playBoard.writePlay(playerList[1], e.target);
-        }
-        alternatePlayer();
-        playerTurnMessage();
+function enableBoardPLay() {
+    const board = document.getElementsByClassName("boardSquare");
+    Array.from(board).forEach(element => {
+        element.addEventListener("click", playTurn);
     });
-});
+}
+
+function disableBoardPlay() {
+    const board = document.getElementsByClassName("boardSquare");
+    Array.from(board).forEach(element => {
+        element.removeEventListener("click", playTurn);
+    });
+}
+
+function playTurn(e) {
+    if (playerOneTurn) {
+        playBoard.writePlay(playerList[0], e.target);
+    } else {
+        playBoard.writePlay(playerList[1], e.target);
+    }
+}
+
 
 const lockPlayer = document.getElementsByClassName("lockPlayer");
 Array.from(lockPlayer).forEach(element => {
@@ -67,6 +103,7 @@ Array.from(lockPlayer).forEach(element => {
                     .forEach(element => {
                         element.disabled = false;
                     });
+                enableBoardPLay();
                 randomizeFirst();
                 playerTurnMessage();
             }
@@ -76,6 +113,7 @@ Array.from(lockPlayer).forEach(element => {
                 .forEach(element => {
                     element.disabled = true;
                 });
+            disableBoardPlay();
         }
     })
 });
@@ -142,6 +180,12 @@ function playerTurnMessage() {
     }
 }
 
+function winMessage(player) {
+    document.getElementsByClassName("player_Turn")[0].textContent = "It's OVER! "
+        + player.getPlayerName() + " is victorious";
+    document.getElementsByClassName("player_Turn")[0].style.color = player.getPlayerColor();
+}
+
 function alternatePlayer() {
-   return playerOneTurn = !playerOneTurn;
+    return playerOneTurn = !playerOneTurn;
 }
