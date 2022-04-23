@@ -92,8 +92,28 @@ select:disabled {
     border-style: solid;
     border-color: white;
     display: flex;
-    justify-content: center;
     gap: 10px;
+}
+
+.controls_RightContainer{
+    display: flex;
+    justify-content: center;
+    flex: 1 1 auto;
+}
+
+.player_Turn{
+    animation: twinkle 0.5s alternate infinite;
+}
+
+@keyframes twinkle {
+    from{
+     opacity: 1;
+     background-color: #0000000F;
+    }
+    to{
+        opacity: 0.4;
+        background-color: #FFFFFFFF;
+    }    
 }
 
 main {
@@ -109,7 +129,11 @@ main {
 }
 
 main>div {
-    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 8em;
+    text-align: center;
 }
 
 
