@@ -111,7 +111,7 @@ select:disabled {
      background-color: #0000000F;
     }
     to{
-        opacity: 0.4;
+        opacity: 0.6;
         background-color: #FFFFFFFF;
     }    
 }
