@@ -77,6 +77,14 @@ const playBoard = (() => {
     return { writePlay, clearBoard };
 })();
 
+const score = (() => {
+    const totalMatches = 0;
+
+    const incrementTotal = () => {totalMatches++}
+    const getTotalMatches = () => {return totalMatches}
+
+})
+
 function enableBoardPLay() {
     const board = document.getElementsByClassName("boardSquare");
     Array.from(board).forEach(element => {
