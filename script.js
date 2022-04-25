@@ -1,11 +1,7 @@
-let playerList = [];
-let playerOneLock = false;
-let playerTwoLock = false;
-let playerOneTurn = false;
-
 const playerFactory = (name, type, symbol, color) => {
     let wins = 0;
     const countWins = () => wins++;
+    const resetWins = () => wins = 0;
     const getPlayerName = () => name;
     const getPlayerType = () => type;
     const getPlayerSymbol = () => symbol;
@@ -14,24 +10,25 @@ const playerFactory = (name, type, symbol, color) => {
 
     return {
         getPlayerName, getPlayerType, getPlayerSymbol,
-        getPlayerColor, getPlayerWins, countWins
+        getPlayerColor, getPlayerWins, countWins, resetWins
     };
 }
 
 const playBoard = (() => {
     let gameBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+    let playerList = [];
 
     function enableBoardPLay() {
         const board = document.getElementsByClassName("boardSquare");
         Array.from(board).forEach(element => {
-            element.addEventListener("click", playTurn);
+            element.addEventListener("click", controls.playerTurn);
         });
     }
 
     function disableBoardPlay() {
         const board = document.getElementsByClassName("boardSquare");
         Array.from(board).forEach(element => {
-            element.removeEventListener("click", playTurn);
+            element.removeEventListener("click", controls.playerTurn);
         });
     }
 
@@ -48,18 +45,18 @@ const playBoard = (() => {
         if (checkWin(player)) {
             disableBoardPlay();
             player.countWins();
-            winMessage(player);
+            messages.winMessage(player);
             score.incrementTotalMatches();
             score.updateScore();
         } else if (checkDraw()) {
             disableBoardPlay();
-            drawMessage();
+            messages.drawMessage();
             score.incrementTotalDraws();
             score.incrementTotalMatches();
             score.updateScore();
         } else {
-            alternatePlayer();
-            playerTurnMessage();
+            controls.alternatePlayer();
+            messages.playerTurnMessage();
         }
     }
 
@@ -93,7 +90,7 @@ const playBoard = (() => {
         });
     }
 
-    return { writePlay, clearBoard, enableBoardPLay, disableBoardPlay };
+    return { playerList, writePlay, clearBoard, enableBoardPLay, disableBoardPlay };
 })();
 
 const score = (() => {
@@ -107,18 +104,20 @@ const score = (() => {
 
     const updateScore = () => {
         document.getElementsByClassName("totalMatches")[0].textContent = "Total games player: " + getTotalMatches();
-        document.getElementsByClassName("playerOne_Wins")[0].textContent = "Player 1 wins: " + playerList[0].getPlayerWins();
-        document.getElementsByClassName("playerOne_Wins")[0].style.color = ""+playerList[0].getPlayerColor();
-        document.getElementsByClassName("playerTwo_Wins")[0].textContent = "Player 2 wins: " + playerList[1].getPlayerWins();
-        document.getElementsByClassName("playerTwo_Wins")[0].style.color = ""+playerList[1].getPlayerColor();
+        document.getElementsByClassName("playerOne_Wins")[0].textContent = "Player 1 wins: " + playBoard.playerList[0].getPlayerWins();
+        document.getElementsByClassName("playerOne_Wins")[0].style.color = "" + playBoard.playerList[0].getPlayerColor();
+        document.getElementsByClassName("playerTwo_Wins")[0].textContent = "Player 2 wins: " + playBoard.playerList[1].getPlayerWins();
+        document.getElementsByClassName("playerTwo_Wins")[0].style.color = "" + playBoard.playerList[1].getPlayerColor();
         document.getElementsByClassName("totalDraws")[0].textContent = "Draws: " + getTotalDraws();
     }
 
-    const resetScore = () =>{
+    const resetScore = () => {
         document.getElementsByClassName("totalMatches")[0].textContent = "Total games player: ";
         document.getElementsByClassName("playerOne_Wins")[0].textContent = "Player 1 wins: ";
         document.getElementsByClassName("playerOne_Wins")[0].style.color = "#FFFFFF";
+        playBoard.playerList[0].resetWins();
         document.getElementsByClassName("playerTwo_Wins")[0].textContent = "Player 2 wins: ";
+        playBoard.playerList[1].resetWins();
         document.getElementsByClassName("playerTwo_Wins")[0].style.color = "#FFFFFF";
         document.getElementsByClassName("totalDraws")[0].textContent = "Draws: "
     }
@@ -126,154 +125,176 @@ const score = (() => {
     return { incrementTotalMatches, incrementTotalDraws, updateScore, resetScore };
 })();
 
-function playTurn(e) {
-    if (playerOneTurn) {
-        playBoard.writePlay(playerList[0], e.target);
-    } else {
-        playBoard.writePlay(playerList[1], e.target);
+const controls = (() => {
+    let playerOneTurn = false;
+
+    const enableControls = () => {
+        Array.from(document.getElementsByClassName("controls_Container")[0].getElementsByTagName("button"))
+            .forEach(element => {
+                element.disabled = false;
+            });
+        document.getElementById("newMatch").addEventListener("click", newMatch);
+        document.getElementById("resetScore").addEventListener("click", score.resetScore);
     }
-}
 
-function newMatch() {
-    playBoard.clearBoard();
-    playBoard.enableBoardPLay();
-    randomizeFirst();
-    playerTurnMessage();
-}
+    const disableControls = () => {
+        Array.from(document.getElementsByClassName("controls_Container")[0].getElementsByTagName("button"))
+            .forEach(element => {
+                element.disabled = true;
+            });
+        document.getElementById("newMatch").removeEventListener("click", newMatch);
+        document.getElementById("resetScore").removeEventListener("click", score.resetScore);
+    }
 
-function enableControls() {
-    Array.from(document.getElementsByClassName("controls_Container")[0].getElementsByTagName("button"))
-        .forEach(element => {
-            element.disabled = false;
+    const newMatch = () => {
+        playBoard.clearBoard();
+        playBoard.enableBoardPLay();
+        randomizeFirst();
+        messages.playerTurnMessage();
+    }
+
+    const randomizeFirst = () => {
+        if (Math.round(Math.random()) == 0) {
+            playerOneTurn = true;
+        } else {
+            playerOneTurn = false;
+        }
+    }
+
+    const playerTurn = (event) => {
+        if (playerOneTurn) {
+            playBoard.writePlay(playBoard.playerList[0], event.target);
+        } else {
+            playBoard.writePlay(playBoard.playerList[1], event.target);
+        }
+    }
+
+    const alternatePlayer = () => {
+        return playerOneTurn = !playerOneTurn;
+    }
+
+    const getPlayerTurn = () => { playerOneTurn; }
+
+    return { enableControls, disableControls, newMatch, playerTurn, getPlayerTurn, alternatePlayer }
+})();
+
+const messages = (() => {
+    const playerTurnMessage = () => {
+        if (controls.getPlayerTurn()) {
+            document.getElementsByClassName("player_Turn")[0].textContent = "It's "
+                + playBoard.playerList[0].getPlayerName() + " turn.";
+            document.getElementsByClassName("player_Turn")[0].style.color = playBoard.playerList[0].getPlayerColor();
+        } else {
+            document.getElementsByClassName("player_Turn")[0].textContent = "It's "
+                + playBoard.playerList[1].getPlayerName() + " turn.";
+            document.getElementsByClassName("player_Turn")[0].style.color = playBoard.playerList[1].getPlayerColor();
+        }
+    }
+
+    const winMessage = (player) => {
+        document.getElementsByClassName("player_Turn")[0].textContent = "It's OVER! "
+            + player.getPlayerName() + " is victorious";
+        document.getElementsByClassName("player_Turn")[0].style.color = player.getPlayerColor();
+    }
+
+    const drawMessage = () => {
+        document.getElementsByClassName("player_Turn")[0].textContent = "It's a DRAW! Click New Match to restart.";
+        document.getElementsByClassName("player_Turn")[0].style.color = "#A216A2";
+    }
+
+    return { playerTurnMessage, winMessage, drawMessage }
+})();
+
+const initiate = (() => {
+    let playerOneLock = false;
+    let playerTwoLock = false;
+
+    const protectPlayerSymbols = () => {
+        document.getElementById("playerOne_Symbol").addEventListener("change", (e) => {
+            if (e.target.selectedIndex == 0) {
+                document.getElementById("playerTwo_Symbol").selectedIndex = 1;
+            } else {
+                document.getElementById("playerTwo_Symbol").selectedIndex = 0;
+            }
         });
-    document.getElementById("newMatch").addEventListener("click", newMatch);
-    document.getElementById("resetScore").addEventListener("click", score.resetScore);
-}
+        document.getElementById("playerTwo_Symbol").addEventListener("change", (e) => {
+            if (e.target.selectedIndex == 0) {
+                document.getElementById("playerOne_Symbol").selectedIndex = 1;
+            } else {
+                document.getElementById("playerOne_Symbol").selectedIndex = 0;
+            }
+        });
+    }
 
-function disableControls() {
-    Array.from(document.getElementsByClassName("controls_Container")[0].getElementsByTagName("button"))
-        .forEach(element => {
+    const lockPlayerData = (event, element) => {
+        let playerData = getPlayerData(element);
+        if (element.parentElement.className.endsWith("One_Container")) {
+            playerOneLock = true;
+            playBoard.playerList[0] = playerFactory(playerData[0], playerData[1], playerData[2], playerData[3]);
+        }
+        if (element.parentElement.className.endsWith("Two_Container")) {
+            playerTwoLock = true;
+            playBoard.playerList[1] = playerFactory(playerData[0], playerData[1], playerData[2], playerData[3]);
+        }
+        event.target.textContent = "Unlock";
+        Array.from(element.parentElement.getElementsByTagName("input")).forEach(element => {
             element.disabled = true;
         });
-    document.getElementById("newMatch").removeEventListener("click", newMatch);
-    document.getElementById("resetScore").removeEventListener("click", score.resetScore);
-}
+        Array.from(element.parentElement.getElementsByTagName("select")).forEach(element => {
+            element.disabled = true;
+        });
+    }
 
-{//Protect select choices, disabling both players having the same symbol.
-    document.getElementById("playerOne_Symbol").addEventListener("change", (e) => {
-        if (e.target.selectedIndex == 0) {
-            document.getElementById("playerTwo_Symbol").selectedIndex = 1;
-        } else {
-            document.getElementById("playerTwo_Symbol").selectedIndex = 0;
-        }
-    });
-    document.getElementById("playerTwo_Symbol").addEventListener("change", (e) => {
-        if (e.target.selectedIndex == 0) {
-            document.getElementById("playerOne_Symbol").selectedIndex = 1;
-        } else {
-            document.getElementById("playerOne_Symbol").selectedIndex = 0;
-        }
-    });
-}
+    const getPlayerData = (element) => {
+        let playerData = [];
+        playerData.push(element.parentElement[0].value);
+        playerData.push(element.parentElement[1].value);
+        playerData.push(element.parentElement[2].value);
+        playerData.push(element.parentElement[3].value);
+        return playerData;
+    }
 
-{//Ready the game when both players are locked.
-    const lockPlayer = document.getElementsByClassName("lockPlayer");
-    Array.from(lockPlayer).forEach(element => {
-        element.addEventListener("click", (e) => {
-            if (e.target.textContent == "Lock-in") {
-                lockPlayerData(e, element);
-                if (playerOneLock && playerTwoLock) {
-                    enableControls();
-                    newMatch();
-                    playBoard.enableBoardPLay();
-                    randomizeFirst();
-                    playerTurnMessage();
+    const unlockPlayerData = (event, element) => {
+        if (element.parentElement.className.endsWith("One_Container")) {
+            playerOneLock = false;
+        }
+        if (element.parentElement.className.endsWith("Two_Container")) {
+            playerTwoLock = false;
+        }
+        event.target.textContent = "Lock-in";
+        Array.from(element.parentElement.getElementsByTagName("input")).forEach(element => {
+            element.disabled = false;
+        });
+        Array.from(element.parentElement.getElementsByTagName("select")).forEach(element => {
+            element.disabled = false;
+        });
+    }
+
+    const readyGame = () => {
+        protectPlayerSymbols();
+        Array.from(document.getElementsByClassName("lockPlayer")).forEach(element => {
+            element.addEventListener("click", (e) => {
+                if (e.target.textContent == "Lock-in") {
+                    lockPlayerData(e, element);
+                    if (playerOneLock && playerTwoLock) {
+                        controls.enableControls();
+                        controls.newMatch();
+                        playBoard.enableBoardPLay();
+                        messages.playerTurnMessage();
+                    }
+                } else {
+                    unlockPlayerData(e, element);
+                    controls.disableControls();
+                    playBoard.disableBoardPlay();
+                    playBoard.clearBoard();
+                    score.resetScore();
+                    document.getElementsByClassName("player_Turn")[0].textContent = "";
                 }
-            } else {
-                unlockPlayerData(e, element);
-                disableControls();
-                playBoard.disableBoardPlay();
-                playBoard.clearBoard();
-                score.resetScore();
-                document.getElementsByClassName("player_Turn")[0].textContent = "";
-            }
-        })
-    });
-}
-
-function getPlayerData(element) {
-    let playerData = [];
-    playerData.push(element.parentElement[0].value);
-    playerData.push(element.parentElement[1].value);
-    playerData.push(element.parentElement[2].value);
-    playerData.push(element.parentElement[3].value);
-    return playerData;
-}
-
-function lockPlayerData(event, element) {
-    let playerData = getPlayerData(element);
-    if (element.parentElement.className.endsWith("One_Container")) {
-        playerOneLock = true;
-        playerList[0] = playerFactory(playerData[0], playerData[1], playerData[2], playerData[3]);
+            })
+        });
     }
-    if (element.parentElement.className.endsWith("Two_Container")) {
-        playerTwoLock = true;
-        playerList[1] = playerFactory(playerData[0], playerData[1], playerData[2], playerData[3]);
-    }
-    event.target.textContent = "Unlock";
-    Array.from(element.parentElement.getElementsByTagName("input")).forEach(element => {
-        element.disabled = true;
-    });
-    Array.from(element.parentElement.getElementsByTagName("select")).forEach(element => {
-        element.disabled = true;
-    });
-}
 
-function unlockPlayerData(event, element) {
-    if (element.parentElement.className.endsWith("One_Container")) {
-        playerOneLock = false;
-    }
-    if (element.parentElement.className.endsWith("Two_Container")) {
-        playerTwoLock = false;
-    }
-    event.target.textContent = "Lock-in";
-    Array.from(element.parentElement.getElementsByTagName("input")).forEach(element => {
-        element.disabled = false;
-    });
-    Array.from(element.parentElement.getElementsByTagName("select")).forEach(element => {
-        element.disabled = false;
-    });
-}
+    return { readyGame }
+})();
 
-function randomizeFirst() {
-    if (Math.round(Math.random()) == 0) {
-        playerOneTurn = true;
-    }
-}
-
-function playerTurnMessage() {
-    if (playerOneTurn) {
-        document.getElementsByClassName("player_Turn")[0].textContent = "It's "
-            + playerList[0].getPlayerName() + " turn.";
-        document.getElementsByClassName("player_Turn")[0].style.color = playerList[0].getPlayerColor();
-    } else {
-        document.getElementsByClassName("player_Turn")[0].textContent = "It's "
-            + playerList[1].getPlayerName() + " turn.";
-        document.getElementsByClassName("player_Turn")[0].style.color = playerList[1].getPlayerColor();
-    }
-}
-
-function winMessage(player) {
-    document.getElementsByClassName("player_Turn")[0].textContent = "It's OVER! "
-        + player.getPlayerName() + " is victorious";
-    document.getElementsByClassName("player_Turn")[0].style.color = player.getPlayerColor();
-}
-
-function drawMessage() {
-    document.getElementsByClassName("player_Turn")[0].textContent = "It's a DRAW! Click New Match to restart.";
-    document.getElementsByClassName("player_Turn")[0].style.color = "#A216A2";
-}
-
-function alternatePlayer() {
-    return playerOneTurn = !playerOneTurn;
-}
+initiate.readyGame();
