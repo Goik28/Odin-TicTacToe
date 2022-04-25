@@ -21,6 +21,20 @@ const playerFactory = (name, type, symbol, color) => {
 const playBoard = (() => {
     let gameBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
+    function enableBoardPLay() {
+        const board = document.getElementsByClassName("boardSquare");
+        Array.from(board).forEach(element => {
+            element.addEventListener("click", playTurn);
+        });
+    }
+
+    function disableBoardPlay() {
+        const board = document.getElementsByClassName("boardSquare");
+        Array.from(board).forEach(element => {
+            element.removeEventListener("click", playTurn);
+        });
+    }
+
     const writePlay = (player, boardSquare) => {
         if (checkValidPlay(boardSquare)) {
             boardSquare.textContent = player.getPlayerSymbol();
@@ -35,9 +49,14 @@ const playBoard = (() => {
             disableBoardPlay();
             player.countWins();
             winMessage(player);
+            score.incrementTotalMatches();
+            score.updateScore();
         } else if (checkDraw()) {
             disableBoardPlay();
             drawMessage();
+            score.incrementTotalDraws();
+            score.incrementTotalMatches();
+            score.updateScore();
         } else {
             alternatePlayer();
             playerTurnMessage();
@@ -50,7 +69,7 @@ const playBoard = (() => {
 
     const checkDraw = () => {
         return (gameBoard.every(element => {
-           return typeof (element) == "string";
+            return typeof (element) == "string";
         }));
     }
 
@@ -74,30 +93,38 @@ const playBoard = (() => {
         });
     }
 
-    return { writePlay, clearBoard };
+    return { writePlay, clearBoard, enableBoardPLay, disableBoardPlay };
 })();
 
 const score = (() => {
-    const totalMatches = 0;
+    let totalMatches = 0;
+    const incrementTotalMatches = () => totalMatches++;
+    const getTotalMatches = () => totalMatches;
 
-    const incrementTotal = () => {totalMatches++}
-    const getTotalMatches = () => {return totalMatches}
+    let totalDraws = 0;
+    const incrementTotalDraws = () => totalDraws++;
+    const getTotalDraws = () => totalDraws;
 
-})
+    const updateScore = () => {
+        document.getElementsByClassName("totalMatches")[0].textContent = "Total games player: " + getTotalMatches();
+        document.getElementsByClassName("playerOne_Wins")[0].textContent = "Player 1 wins: " + playerList[0].getPlayerWins();
+        document.getElementsByClassName("playerOne_Wins")[0].style.color = ""+playerList[0].getPlayerColor();
+        document.getElementsByClassName("playerTwo_Wins")[0].textContent = "Player 2 wins: " + playerList[1].getPlayerWins();
+        document.getElementsByClassName("playerTwo_Wins")[0].style.color = ""+playerList[1].getPlayerColor();
+        document.getElementsByClassName("totalDraws")[0].textContent = "Draws: " + getTotalDraws();
+    }
 
-function enableBoardPLay() {
-    const board = document.getElementsByClassName("boardSquare");
-    Array.from(board).forEach(element => {
-        element.addEventListener("click", playTurn);
-    });
-}
+    const resetScore = () =>{
+        document.getElementsByClassName("totalMatches")[0].textContent = "Total games player: ";
+        document.getElementsByClassName("playerOne_Wins")[0].textContent = "Player 1 wins: ";
+        document.getElementsByClassName("playerOne_Wins")[0].style.color = "#FFFFFF";
+        document.getElementsByClassName("playerTwo_Wins")[0].textContent = "Player 2 wins: ";
+        document.getElementsByClassName("playerTwo_Wins")[0].style.color = "#FFFFFF";
+        document.getElementsByClassName("totalDraws")[0].textContent = "Draws: "
+    }
 
-function disableBoardPlay() {
-    const board = document.getElementsByClassName("boardSquare");
-    Array.from(board).forEach(element => {
-        element.removeEventListener("click", playTurn);
-    });
-}
+    return { incrementTotalMatches, incrementTotalDraws, updateScore, resetScore };
+})();
 
 function playTurn(e) {
     if (playerOneTurn) {
@@ -109,7 +136,7 @@ function playTurn(e) {
 
 function newMatch() {
     playBoard.clearBoard();
-    enableBoardPLay();
+    playBoard.enableBoardPLay();
     randomizeFirst();
     playerTurnMessage();
 }
@@ -120,6 +147,7 @@ function enableControls() {
             element.disabled = false;
         });
     document.getElementById("newMatch").addEventListener("click", newMatch);
+    document.getElementById("resetScore").addEventListener("click", score.resetScore);
 }
 
 function disableControls() {
@@ -128,6 +156,7 @@ function disableControls() {
             element.disabled = true;
         });
     document.getElementById("newMatch").removeEventListener("click", newMatch);
+    document.getElementById("resetScore").removeEventListener("click", score.resetScore);
 }
 
 {//Protect select choices, disabling both players having the same symbol.
@@ -156,15 +185,16 @@ function disableControls() {
                 if (playerOneLock && playerTwoLock) {
                     enableControls();
                     newMatch();
-                    enableBoardPLay();
+                    playBoard.enableBoardPLay();
                     randomizeFirst();
                     playerTurnMessage();
                 }
             } else {
                 unlockPlayerData(e, element);
                 disableControls();
-                disableBoardPlay();
+                playBoard.disableBoardPlay();
                 playBoard.clearBoard();
+                score.resetScore();
                 document.getElementsByClassName("player_Turn")[0].textContent = "";
             }
         })
