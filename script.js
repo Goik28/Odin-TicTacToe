@@ -14,6 +14,18 @@ const playerFactory = (name, type, symbol, color) => {
     };
 }
 
+const randomAI = (() => {
+    const randomizePlay = () => {
+        let boardSquare;
+        do {
+            let position = Math.floor(Math.random() * 9);
+            boardSquare = document.getElementsByClassName("boardSquare")[position];
+        } while (!playBoard.checkValidPlay(boardSquare));
+        return boardSquare.click();
+    }
+    return { randomizePlay };
+})();
+
 const playBoard = (() => {
     let gameBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8];
     let playerList = [];
@@ -57,6 +69,12 @@ const playBoard = (() => {
         } else {
             controls.alternatePlayer();
             messages.playerTurnMessage();
+            if (controls.getPlayerTurn() && (playBoard.playerList[0].getPlayerType() == "randomAI")) {
+                randomAI.randomizePlay();
+            }
+            if ((controls.getPlayerTurn() == false) && (playBoard.playerList[1].getPlayerType() == "randomAI")) {
+                randomAI.randomizePlay();
+            }
         }
     }
 
@@ -90,7 +108,7 @@ const playBoard = (() => {
         });
     }
 
-    return { playerList, writePlay, clearBoard, enableBoardPLay, disableBoardPlay };
+    return { playerList, checkValidPlay, writePlay, clearBoard, enableBoardPLay, disableBoardPlay };
 })();
 
 const score = (() => {
@@ -156,8 +174,14 @@ const controls = (() => {
     const randomizeFirst = () => {
         if (Math.round(Math.random()) == 0) {
             playerOneTurn = true;
+            if (playBoard.playerList[0].getPlayerType() == "randomAI") {
+                randomAI.randomizePlay();
+            }
         } else {
             playerOneTurn = false;
+            if (playBoard.playerList[1].getPlayerType() == "randomAI") {
+                randomAI.randomizePlay();
+            }
         }
     }
 
@@ -170,10 +194,10 @@ const controls = (() => {
     }
 
     const alternatePlayer = () => {
-        return playerOneTurn = !playerOneTurn;
+        playerOneTurn = !playerOneTurn;
     }
 
-    const getPlayerTurn = () => { playerOneTurn; }
+    const getPlayerTurn = () =>  playerOneTurn; 
 
     return { enableControls, disableControls, newMatch, playerTurn, getPlayerTurn, alternatePlayer }
 })();
@@ -279,8 +303,6 @@ const initiate = (() => {
                     if (playerOneLock && playerTwoLock) {
                         controls.enableControls();
                         controls.newMatch();
-                        playBoard.enableBoardPLay();
-                        messages.playerTurnMessage();
                     }
                 } else {
                     unlockPlayerData(e, element);
